@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e639c"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#818cf8"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+  
+  <!-- App Icon Background -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  
+  <!-- Subtle Grid Pattern in background -->
+  <path d="M64 160h384M64 256h384M64 352h384M160 64v384M256 64v384M352 64v384" stroke="rgba(255,255,255,0.06)" stroke-width="2"/>
+  
+  <!-- Terminal Window Card -->
+  <rect x="80" y="80" width="352" height="352" rx="36" fill="#1e1e24" stroke="#333846" stroke-width="4" filter="url(#shadow)"/>
+  
+  <!-- Window Header -->
+  <path d="M80 136h352" stroke="#2d313e" stroke-width="2"/>
+  <circle cx="116" cy="108" r="8" fill="#ef4444"/>
+  <circle cx="140" cy="108" r="8" fill="#f59e0b"/>
+  <circle cx="164" cy="108" r="8" fill="#10b981"/>
+  
+  <!-- Code Brackets & Flask Graphic -->
+  <!-- Left Bracket < -->
+  <path d="M190 190L130 256l60 66" stroke="url(#accent)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  
+  <!-- Right Bracket > -->
+  <path d="M322 190l60 66-60 66" stroke="url(#accent)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  
+  <!-- Central Flask/Slash -->
+  <path d="M280 180L232 332" stroke="#38bdf8" stroke-width="20" stroke-linecap="round" fill="none"/>
+  
+  <!-- Pulse Dot -->
+  <circle cx="256" cy="256" r="12" fill="#38bdf8"/>
+</svg>
