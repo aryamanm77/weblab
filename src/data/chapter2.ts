@@ -36,24 +36,17 @@ p {
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Figure 2.1 - CSS Syntax</title>
+  <title>CSS Syntax &amp; Rules - Figure 2.1</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Figure 2.1: CSS Syntax Rules</h1>
+  <h1>CSS Typography &amp; Styling</h1>
 
   <p>This paragraph is styled by the <code>p</code> selector with margins, bold weight, and an Arial font stack.</p>
 
   <p>Inside this sentence, there is an <em>emphasized element</em> styled in red color by the <code>em</code> rule.</p>
 
-  <div class="anatomy-card">
-    <h3>Anatomy of a CSS Rule:</h3>
-    <ul>
-      <li><strong>Selector:</strong> Identifies elements (e.g. <code>p</code> or <code>em</code>)</li>
-      <li><strong>Declaration Block:</strong> Enclosed in curly braces <code>{ ... }</code></li>
-      <li><strong>Declaration:</strong> <code>property: value;</code> terminated by semicolon</li>
-    </ul>
-  </div>
+  <p>Another paragraph demonstrating the consistent spacing and visual hierarchy defined by the CSS rules.</p>
 </body>
 </html>`,
     css: `/* Exact rules from Figure 2.1 */
@@ -67,19 +60,21 @@ p {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Supplemental presentation */
+/* Base page presentation */
 body {
-  padding: 20px;
-  background: #f8fafc;
+  padding: 24px;
+  max-width: 650px;
+  margin: 0 auto;
+  background-color: #f8fafc;
+  color: #1e293b;
+  line-height: 1.6;
 }
-.anatomy-card {
-  margin-top: 24px;
-  background: white;
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  padding: 16px 20px;
-  font-family: sans-serif;
-  font-weight: normal;
+h1 {
+  font-size: 24px;
+  color: #0f172a;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
 }`,
     javascript: `console.log("Figure 2.1 CSS Syntax verified.");`,
     expectedBehavior: 'Displays paragraph with bold Arial font and margins, and red emphasized inline text.',

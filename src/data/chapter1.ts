@@ -28,37 +28,34 @@ export const CHAPTER_1_EXAMPLES: CatalogExample[] = [
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>XML Data Example - Page 2</title>
+  <title>Art Gallery Collection - Manet</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="card">
     <header class="header">
-      <h2>XML Data Representation in Web Technology</h2>
-      <p class="subtitle">Source: Page 2 - Simple XML Document & XHTML rules</p>
+      <span class="badge">Artwork #290</span>
+      <h2>The Balcony</h2>
+      <p class="artist-name">Édouard Manet <span class="nationality">(France)</span></p>
     </header>
 
-    <div class="xml-viewer">
-      <h3>Art Collection Record (Parsed from XML)</h3>
-      <table class="data-table">
-        <tr><th>Tag / Attribute</th><th>Value</th><th>XML Rule Verified</th></tr>
-        <tr><td><code>&lt;painting id="290"&gt;</code></td><td>ID #290</td><td>Attribute values must be in quotes</td></tr>
-        <tr><td><code>&lt;title&gt;</code></td><td>Balcony</td><td>Case-sensitive closing tag</td></tr>
-        <tr><td><code>&lt;artist&gt; &gt; &lt;name&gt;</code></td><td>Édouard Manet</td><td>Strict parent-child nesting</td></tr>
-        <tr><td><code>&lt;artist&gt; &gt; &lt;nationality&gt;</code></td><td>France</td><td>No overlapping tags allowed</td></tr>
-        <tr><td><code>&lt;year&gt;</code></td><td>1868</td><td>Well-formed text node</td></tr>
-        <tr><td><code>&lt;medium&gt;</code></td><td>Oil on canvas</td><td>Closed before parent &lt;/painting&gt;</td></tr>
-      </table>
+    <div class="details-grid">
+      <div class="detail-item">
+        <span class="detail-label">Year Created:</span>
+        <span class="detail-val">1868</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Medium:</span>
+        <span class="detail-val">Oil on canvas</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Location:</span>
+        <span class="detail-val">Musée d'Orsay, Paris</span>
+      </div>
     </div>
 
-    <div class="rules-box">
-      <h4>Key XML / XHTML Rules (Page 2):</h4>
-      <ul>
-        <li>Single root element (<code>&lt;art&gt;</code>)</li>
-        <li>Element & attribute names are case sensitive</li>
-        <li>Attributes must always be within quotes</li>
-        <li>All elements must have a closing tag or be self-closing</li>
-      </ul>
+    <div class="description">
+      <p>This record represents the structured data parsed from the XML catalog document: <code>&lt;art&gt;&lt;painting id="290"&gt;...&lt;/painting&gt;&lt;/art&gt;</code>.</p>
     </div>
   </div>
 </body>
@@ -163,92 +160,76 @@ Example empty element:
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Figure 1.2 - Parts of an HTML Element</title>
+  <title>Central Park Destination Showcase</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Figure 1.2: The Parts of an HTML Element</h1>
-  
-  <div class="diagram-box">
-    <h3>Standard Element Anatomy:</h3>
-    <p>Below is the link element from Figure 1.2:</p>
-    <div class="interactive-preview">
-      <a href="http://www.centralpark.com" target="_blank">Central Park</a>
+  <div class="destination-card">
+    <div class="card-media">
+      <img src="https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=500" 
+           alt="Central Park Manhattan trees and walking pathway" 
+           class="feature-img" width="300" height="180" />
     </div>
-
-    <div class="breakdown">
-      <div class="part"><span class="badge tag">&lt;a&gt;</span> Opening Tag</div>
-      <div class="part"><span class="badge name">a</span> Element Name</div>
-      <div class="part"><span class="badge attr">href="..."</span> Attribute (name=value)</div>
-      <div class="part"><span class="badge content">Central Park</span> Content</div>
-      <div class="part"><span class="badge close">&lt;/a&gt;</span> Closing Tag</div>
+    <div class="card-body">
+      <h2>Visit New York City</h2>
+      <p class="description">Explore one of the most famous public green spaces in North America:</p>
+      <a href="http://www.centralpark.com" target="_blank" class="explore-btn">
+        Central Park &rarr;
+      </a>
     </div>
-  </div>
-
-  <div class="diagram-box">
-    <h3>Empty Element Anatomy:</h3>
-    <p>Empty elements have no closing tag and cannot contain text content:</p>
-    <div class="interactive-preview">
-      <!-- Image demonstration using an inline SVG badge for file.gif -->
-      <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='36' viewBox='0 0 120 36'><rect width='100%' height='100%' fill='%230284c7'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' fill='white' font-family='sans-serif' font-size='12' font-weight='bold'>file.gif (image)</text></svg>" alt="file.gif demonstration" />
-    </div>
-    <p>Code: <code>&lt;img src="file.gif" /&gt;</code> (Trailing slash optional in HTML5, mandatory in XHTML)</p>
   </div>
 </body>
 </html>`,
     css: `body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  padding: 24px;
-  background-color: #fafafa;
-  color: #333;
+  padding: 30px;
+  background-color: #f8fafc;
+  color: #1e293b;
+  display: flex;
+  justify-content: center;
 }
-.diagram-box {
+.destination-card {
+  max-width: 380px;
   background: white;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  border: 1px solid #e2e8f0;
+}
+.feature-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+.card-body {
   padding: 20px;
-  margin-bottom: 20px;
 }
-.interactive-preview {
-  padding: 16px;
-  background: #f0fdf4;
-  border: 1px dashed #22c55e;
-  border-radius: 4px;
-  margin: 12px 0;
+h2 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  color: #0f172a;
+}
+.description {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.5;
+}
+.explore-btn {
   display: inline-block;
+  background-color: #0284c7;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.2s;
 }
-.interactive-preview a {
-  color: #0369a1;
-  font-size: 18px;
-  font-weight: bold;
-}
-.breakdown {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 12px;
-}
-.part {
-  background: #f1f5f9;
-  padding: 8px 12px;
-  border-radius: 4px;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.badge {
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-family: monospace;
-  font-size: 12px;
-  font-weight: bold;
-}
-.badge.tag { background: #fee2e2; color: #991b1b; }
-.badge.name { background: #e0e7ff; color: #3730a3; }
-.badge.attr { background: #fef3c7; color: #92400e; }
-.badge.content { background: #dcfce7; color: #166534; }
-.badge.close { background: #f3e8ff; color: #6b21a8; }`,
+.explore-btn:hover {
+  background-color: #0369a1;
+}`,
     javascript: `console.log("Figure 1.2 loaded: Inspected standard vs empty HTML elements.");`,
     expectedBehavior: 'Displays the clickable "Central Park" anchor link and the empty <img> element with visual element breakdown.',
     explanation: 'Demonstrates the anatomy of HTML elements: tag name, start tag, attribute name/value, element content, end tag, and empty elements.',
@@ -290,45 +271,43 @@ Example empty element:
   <div>
     <p>This is <span>important</span></p>
   </div>
-
-  <section class="explanation-card">
-    <h3>Document Hierarchy Analysis (Figure 1.3)</h3>
-    <ul>
-      <li><strong>Parent & Child:</strong> <code>&lt;body&gt;</code> is parent to <code>&lt;p&gt;</code>, <code>&lt;h1&gt;</code>, and <code>&lt;div&gt;</code>.</li>
-      <li><strong>Siblings:</strong> The top <code>&lt;p&gt;</code>, <code>&lt;h1&gt;</code>, and <code>&lt;div&gt;</code> share the same parent and are siblings.</li>
-      <li><strong>Descendants:</strong> <code>&lt;strong&gt;</code> is a descendant of <code>&lt;p&gt;</code> and <code>&lt;body&gt;</code>.</li>
-      <li><strong>Ancestors:</strong> <code>&lt;body&gt;</code> is an ancestor to <code>&lt;span&gt;</code>.</li>
-    </ul>
-  </section>
 </body>
 </html>`,
     css: `body {
   font-family: Georgia, serif;
-  padding: 24px;
+  padding: 30px;
   line-height: 1.6;
-  color: #222;
+  color: #1e293b;
+  max-width: 600px;
+  margin: 0 auto;
 }
 h1 {
   color: #1e3a8a;
   border-bottom: 2px solid #e2e8f0;
   padding-bottom: 8px;
+  font-size: 26px;
+}
+p {
+  font-size: 16px;
+  margin: 12px 0;
 }
 strong {
   color: #b91c1c;
 }
+div {
+  background-color: #f1f5f9;
+  padding: 16px;
+  border-radius: 6px;
+  border-left: 4px solid #3b82f6;
+}
+div p {
+  margin: 0;
+}
 span {
   background-color: #fef08a;
-  padding: 2px 4px;
+  padding: 2px 6px;
   font-weight: bold;
-}
-.explanation-card {
-  margin-top: 30px;
-  padding: 16px 20px;
-  background: #f8fafc;
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 14px;
+  border-radius: 3px;
 }`,
     javascript: `// Traverse DOM tree and log relationships
 console.log("DOM Tree Root:", document.body.tagName);
@@ -552,48 +531,70 @@ pre {
   <meta charset="utf-8" />
   <title>Share Your Travels -- New York - Central Park</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="script.js"></script>
 </head>
 <body>
-  <h1>Main heading goes here</h1>
-  <p>This is the standard, complete structural skeleton for modern HTML5 documents.</p>
-  
-  <div class="anatomy-list">
-    <div><strong>Item 1:</strong> <code>&lt;!DOCTYPE html&gt;</code> Document Type Declaration</div>
-    <div><strong>Item 2:</strong> <code>&lt;html lang="en"&gt;</code> Root element with natural language attribute</div>
-    <div><strong>Item 3:</strong> <code>&lt;head&gt;</code> &amp; <code>&lt;title&gt;</code> Document metadata &amp; window/tab title</div>
-    <div><strong>Item 4:</strong> <code>&lt;body&gt;</code> Visible page content</div>
-    <div><strong>Item 5:</strong> <code>&lt;meta charset="utf-8" /&gt;</code> Universal character encoding</div>
-    <div><strong>Item 6:</strong> <code>&lt;link rel="stylesheet" ... /&gt;</code> External CSS reference</div>
-    <div><strong>Item 7:</strong> <code>&lt;script src="..."&gt;</code> External JavaScript reference</div>
-  </div>
+  <header>
+    <h1>Share Your Travels</h1>
+    <p class="tagline">Documenting journeys, photography, and cultural discoveries</p>
+  </header>
+
+  <main>
+    <h2>New York - Central Park</h2>
+    <p>Central Park is an urban park in Manhattan, New York City. Located between the Upper West and Upper East Sides of Manhattan, it is the fifth-largest park in the city by area, covering 843 acres.</p>
+    <p>It is the most visited urban park in the United States, with an estimated 42 million visitors annually, and is one of the most filmed locations in the world.</p>
+  </main>
+
+  <footer>
+    <p>&copy; Share Your Travels. All rights reserved.</p>
+  </footer>
 </body>
 </html>`,
     css: `body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  padding: 24px;
+  padding: 30px;
+  max-width: 680px;
+  margin: 0 auto;
   background-color: #f8fafc;
-  color: #334155;
+  color: #1e293b;
+  line-height: 1.6;
+}
+header {
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 12px;
+  margin-bottom: 24px;
 }
 h1 {
+  margin: 0 0 4px 0;
   color: #0f172a;
-  border-bottom: 2px solid #cbd5e1;
-  padding-bottom: 8px;
+  font-size: 26px;
 }
-.anatomy-list {
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 16px 20px;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.tagline {
+  margin: 0;
+  color: #64748b;
   font-size: 14px;
+}
+h2 {
+  color: #2563eb;
+  font-size: 20px;
+  margin-top: 20px;
+}
+p {
+  margin: 0 0 16px 0;
+}
+footer {
+  margin-top: 36px;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+  color: #94a3b8;
+  font-size: 13px;
 }`,
-    javascript: `console.log("Document charset:", document.characterSet);
-console.log("Document lang:", document.documentElement.lang);`,
-    expectedBehavior: 'Renders full HTML5 document skeleton with numbered callouts corresponding to Figure 1.6.',
-    explanation: 'Faithfully reproduces Figure 1.6 from Page 7-8 showing DOCTYPE, html root with lang, head, meta charset, title, external stylesheet link, script, and body.',
+    javascript: `console.log("HTML5 Document Skeleton Initialized.");
+console.log("Document Charset:", document.characterSet);
+console.log("Document Language:", document.documentElement.lang);
+console.log("Page Title:", document.title);`,
+    expectedBehavior: 'Renders the authentic Share Your Travels HTML5 document structure with header, headings, paragraphs, and footer.',
+    explanation: 'Reproduces Figure 1.6 from Page 7-8 demonstrating the 7 core structural elements: 1. <!DOCTYPE html>, 2. <html lang="en"> root, 3. <head> & <title>, 4. <body> visible content, 5. <meta charset="utf-8" />, 6. <link rel="stylesheet">, and 7. <script src="...">.',
     tags: ['skeleton', 'structure', 'head', 'body', 'meta', 'charset'],
     verificationStatus: 'verified',
     supplementaryExample: false
@@ -1997,14 +1998,14 @@ figcaption {
   },
   {
     id: 'ch1-aside-sidebar',
-    title: 'The <aside> Element: Float Squeeze Pitfall & Responsive Fix',
+    title: 'The <aside> Element (Tangentially Related Content)',
     chapter: 1,
     chapterTitle: 'Chapter 1: Introduction to HTML',
     section: '1.6',
     sectionTitle: 'HTML5 Semantic Structure Elements',
-    topic: 'Aside Elements & Layout Pitfalls',
     sourcePage: 21,
     sourceListingOrFigure: 'Page 21 text (Aside element)',
+    topic: 'Tangentially Related Content & Sidebars',
     originalCode: `<article>
   <h1>Exploring Manhattan</h1>
   <p>Manhattan contains some of the most vibrant urban parks in the world...</p>
@@ -2018,12 +2019,116 @@ figcaption {
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Aside Element & Float Squeeze Pitfall</title>
+  <title>The Aside Element - Share Your Travels</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Mode Toggle Buttons -->
-  <div class="mode-bar">
+  <article class="article-container">
+    <h1>Exploring Manhattan</h1>
+    <p class="lead">Manhattan contains some of the most vibrant urban parks in the world. Walking through its trails offers a serene contrast to the bustling avenues.</p>
+
+    <!-- The aside represents tangentially related content (Page 21) -->
+    <aside class="sidebar-callout">
+      <h3>Did you know?</h3>
+      <p>Central Park receives approximately 42 million visitors annually and spans 843 acres, making it larger than Monaco!</p>
+    </aside>
+
+    <p>Visitors can rent miniature model sailboats on the Conservatory Pond, an activity popular among children and adults alike since the late 19th century. On sunny weekend afternoons, the pond reflects the historic twin towers of the San Remo apartments, creating one of the most photographed vistas in the park.</p>
+
+    <p>Further north, the Ramble offers 36 acres of dense, wild forest with winding paths and rustic wooden bridges designed for birdwatchers seeking peaceful escape from the city grid.</p>
+  </article>
+</body>
+</html>`,
+    css: `body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 24px;
+  background-color: #f8fafc;
+  color: #1e293b;
+  line-height: 1.6;
+}
+.article-container {
+  max-width: 680px;
+  margin: 0 auto;
+  background: white;
+  padding: 28px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+h1 {
+  font-size: 24px;
+  color: #0f172a;
+  margin: 0 0 12px 0;
+}
+.lead {
+  font-size: 15px;
+  color: #475569;
+}
+.sidebar-callout {
+  float: right;
+  width: 220px;
+  margin: 0 0 16px 20px;
+  padding: 16px;
+  background-color: #f0fdf4;
+  border-left: 4px solid #16a34a;
+  border-radius: 6px;
+}
+.sidebar-callout h3 {
+  margin: 0 0 8px 0;
+  color: #15803d;
+  font-size: 15px;
+}
+.sidebar-callout p {
+  margin: 0;
+  font-size: 13px;
+  color: #166534;
+  line-height: 1.5;
+}
+@media (max-width: 580px) {
+  .sidebar-callout {
+    float: none;
+    width: auto;
+    margin: 16px 0;
+  }
+}`,
+    javascript: `console.log("HTML5 <aside> element loaded: represents tangentially related content (Page 21).");`,
+    expectedBehavior: 'Renders the authentic travel article with a cleanly styled float-right <aside> callout that responsively adapts on mobile viewports.',
+    explanation: 'Demonstrates the semantic purpose of <aside> from Page 21: encapsulating tangentially related content, sidebars, pull quotes, or advertising.',
+    tags: ['aside', 'semantics', 'sidebar', 'html5', 'responsive'],
+    verificationStatus: 'verified',
+    supplementaryExample: false
+  },
+  {
+    id: 'ch1-mistake-aside-squeeze',
+    title: 'Common Mistake: The Aside Float Squeeze Layout Bug',
+    chapter: 1,
+    chapterTitle: 'Chapter 1: Introduction to HTML',
+    section: '1.6',
+    sectionTitle: 'HTML5 Semantic Structure Elements',
+    sourcePage: 21,
+    sourceListingOrFigure: 'Page 21 - Float Squeeze Pitfall',
+    topic: 'Narrow Viewport Word-Wrapping & Float Layout Pitfalls',
+    originalCode: `/* THE MISTAKE: Fixed-width float in narrow viewports */
+.sidebar-callout {
+  float: right;
+  width: 200px; /* Consumes too much horizontal space! */
+}
+
+/* THE FIX: Remove float on small viewports */
+@media (max-width: 580px) {
+  .sidebar-callout {
+    float: none;
+    width: auto;
+  }
+}`,
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Aside Float Squeeze Mistake & Fix</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="controls-bar">
     <button id="btn-bug" class="btn active" onclick="setMode('bug')">
       ⚠️ See Layout Mistake (Float Squeeze)
     </button>
@@ -2032,44 +2137,37 @@ figcaption {
     </button>
   </div>
 
-  <div id="notice-bug" class="notice-box warning">
-    <strong>⚠️ The Layout Mistake Shown in Your Screenshot:</strong><br>
+  <div id="notice-box" class="notice-box error">
+    <strong>⚠️ The Layout Mistake:</strong><br>
     When a fixed-width aside (<code>width: 200px; float: right;</code>) is placed inside a narrow container, the text to its left gets squeezed into an awkward 1-word column (&ldquo;the / Conservatory / Pond...&rdquo;).
-  </div>
-
-  <div id="notice-fix" class="notice-box success" style="display: none;">
-    <strong>✓ The Solution:</strong><br>
-    On screens below 550px, remove the float (<code>float: none; width: auto;</code>) so the aside flows naturally without squeezing the text!
   </div>
 
   <article class="article-container">
     <h1>Exploring Manhattan</h1>
     <p>Manhattan contains some of the most vibrant urban parks in the world. Walking through its trails offers a serene contrast to the bustling avenues.</p>
 
-    <!-- The aside represents tangentially related content -->
-    <aside class="sidebar-callout" id="callout-aside">
+    <aside class="sidebar-callout layout-bug" id="callout-aside">
       <h4>Did you know?</h4>
       <p>Central Park receives approximately 42 million visitors annually and spans 843 acres.</p>
     </aside>
 
     <p>Visitors can rent miniature model sailboats on the Conservatory Pond, an activity popular among children and adults alike since the late 19th century.</p>
   </article>
+
+  <script src="script.js"></script>
 </body>
 </html>`,
     css: `body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: system-ui, -apple-system, sans-serif;
   padding: 16px;
-  background-color: #fafafa;
+  background-color: #f8fafc;
   color: #1e293b;
 }
-
-.mode-bar {
+.controls-bar {
   display: flex;
   gap: 8px;
   margin-bottom: 12px;
-  flex-wrap: wrap;
 }
-
 .btn {
   padding: 8px 14px;
   border-radius: 6px;
@@ -2081,13 +2179,11 @@ figcaption {
   color: #334155;
   transition: all 0.2s;
 }
-
 .btn.active {
   background: #0284c7;
   color: white;
   border-color: #0284c7;
 }
-
 .notice-box {
   padding: 12px 14px;
   border-radius: 6px;
@@ -2095,34 +2191,29 @@ figcaption {
   line-height: 1.4;
   margin-bottom: 16px;
 }
-
-.notice-box.warning {
-  background: #fffbeb;
-  border: 1px solid #fde68a;
-  color: #92400e;
+.notice-box.error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
 }
-
 .notice-box.success {
   background: #f0fdf4;
   border: 1px solid #bbf7d0;
   color: #166534;
 }
-
 .article-container {
-  max-width: 440px; /* Narrow container demonstrating the screenshot bug */
+  max-width: 440px; /* Constrained container to trigger squeeze */
   background: white;
   padding: 20px;
   border-radius: 8px;
   border: 1px solid #e2e8f0;
   line-height: 1.6;
 }
-
 h1 {
   font-size: 24px;
   margin: 0 0 12px;
   color: #0f172a;
 }
-
 .sidebar-callout {
   background: #fffbeb;
   border-left: 4px solid #f59e0b;
@@ -2130,25 +2221,19 @@ h1 {
   border-radius: 4px;
   font-size: 13.5px;
 }
-
 .sidebar-callout h4 {
   margin: 0 0 6px;
   color: #b45309;
 }
-
 .sidebar-callout p {
   margin: 0;
   color: #451a03;
 }
-
-/* 1. The Mistake: Fixed 200px float in narrow container */
 .layout-bug {
   float: right;
   width: 200px;
   margin: 0 0 16px 20px;
 }
-
-/* 2. The Solution: Full width block without float */
 .layout-fix {
   float: none;
   width: auto;
@@ -2156,33 +2241,30 @@ h1 {
 }`,
     javascript: `function setMode(mode) {
   const aside = document.getElementById('callout-aside');
-  const noticeBug = document.getElementById('notice-bug');
-  const noticeFix = document.getElementById('notice-fix');
+  const notice = document.getElementById('notice-box');
   const btnBug = document.getElementById('btn-bug');
   const btnFix = document.getElementById('btn-fix');
 
   if (mode === 'bug') {
     aside.className = 'sidebar-callout layout-bug';
-    noticeBug.style.display = 'block';
-    noticeFix.style.display = 'none';
+    notice.className = 'notice-box error';
+    notice.innerHTML = '<strong>⚠️ The Layout Mistake:</strong><br>When a fixed-width aside (<code>width: 200px; float: right;</code>) is placed inside a narrow container, the text to its left gets squeezed into an awkward 1-word column (&ldquo;the / Conservatory / Pond...&rdquo;).';
     btnBug.classList.add('active');
     btnFix.classList.remove('active');
     console.warn("Displaying Layout Mistake: 200px fixed float squeezes adjacent text.");
   } else {
     aside.className = 'sidebar-callout layout-fix';
-    noticeBug.style.display = 'none';
-    noticeFix.style.display = 'block';
+    notice.className = 'notice-box success';
+    notice.innerHTML = '<strong>✓ The Clean Solution:</strong><br>By removing the float on narrow containers (<code>float: none; width: auto;</code>), the aside cleanly flows in document order!';
     btnBug.classList.remove('active');
     btnFix.classList.add('active');
     console.info("Displaying Solution: Responsive aside allows text to breathe naturally.");
   }
 }
-
-// Initial state: start with bug
-setMode('bug');`,
-    expectedBehavior: 'Demonstrates the exact CSS float column squeeze bug shown in the screenshot, with a live one-click toggle to the responsive layout fix.',
-    explanation: 'Explains why floating fixed-width elements causes awkward word-wrapping in narrow viewports, and demonstrates the responsive solution.',
-    tags: ['aside', 'float', 'layout-mistake', 'responsive-fix', 'css-bug'],
+window.setMode = setMode;`,
+    expectedBehavior: 'Interactive side-by-side comparison illustrating why fixed-width floats squeeze adjacent text and how responsive media queries solve it.',
+    explanation: 'Demonstrates the classic CSS float column pinch where a fixed-width floated element leaves insufficient width for inline text in narrow viewports.',
+    tags: ['aside', 'float', 'layout-mistake', 'responsive-fix', 'common-mistake', 'css-bug'],
     verificationStatus: 'verified',
     supplementaryExample: false
   },
