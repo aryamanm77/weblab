@@ -40,6 +40,7 @@ export interface SearchFilters {
   query?: string;
   completedOnly?: boolean;
   bookmarkedOnly?: boolean;
+  isMistake?: boolean;
 }
 
 export function filterCatalog(
@@ -55,6 +56,10 @@ export function filterCatalog(
     if (filters.hasTable !== undefined) {
       const has = !!ex.referenceTable;
       if (filters.hasTable !== has) return false;
+    }
+    if (filters.isMistake) {
+      const isMis = ex.tags.some(t => t.includes('mistake') || t.includes('bug') || t.includes('pitfall'));
+      if (!isMis) return false;
     }
     if (filters.tag && !ex.tags.includes(filters.tag.toLowerCase())) {
       return false;

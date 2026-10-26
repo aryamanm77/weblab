@@ -1997,12 +1997,12 @@ figcaption {
   },
   {
     id: 'ch1-aside-sidebar',
-    title: 'The <aside> Element: Sidebars & Pull Quotes',
+    title: 'The <aside> Element: Float Squeeze Pitfall & Responsive Fix',
     chapter: 1,
     chapterTitle: 'Chapter 1: Introduction to HTML',
     section: '1.6',
     sectionTitle: 'HTML5 Semantic Structure Elements',
-    topic: 'Aside Elements',
+    topic: 'Aside Elements & Layout Pitfalls',
     sourcePage: 21,
     sourceListingOrFigure: 'Page 21 text (Aside element)',
     originalCode: `<article>
@@ -2018,16 +2018,36 @@ figcaption {
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Aside Element - Page 21</title>
+  <title>Aside Element & Float Squeeze Pitfall</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Mode Toggle Buttons -->
+  <div class="mode-bar">
+    <button id="btn-bug" class="btn active" onclick="setMode('bug')">
+      ⚠️ See Layout Mistake (Float Squeeze)
+    </button>
+    <button id="btn-fix" class="btn" onclick="setMode('fix')">
+      ✓ See Responsive Fix (Clean Flow)
+    </button>
+  </div>
+
+  <div id="notice-bug" class="notice-box warning">
+    <strong>⚠️ The Layout Mistake Shown in Your Screenshot:</strong><br>
+    When a fixed-width aside (<code>width: 200px; float: right;</code>) is placed inside a narrow container, the text to its left gets squeezed into an awkward 1-word column (&ldquo;the / Conservatory / Pond...&rdquo;).
+  </div>
+
+  <div id="notice-fix" class="notice-box success" style="display: none;">
+    <strong>✓ The Solution:</strong><br>
+    On screens below 550px, remove the float (<code>float: none; width: auto;</code>) so the aside flows naturally without squeezing the text!
+  </div>
+
   <article class="article-container">
     <h1>Exploring Manhattan</h1>
     <p>Manhattan contains some of the most vibrant urban parks in the world. Walking through its trails offers a serene contrast to the bustling avenues.</p>
 
     <!-- The aside represents tangentially related content -->
-    <aside class="sidebar-callout">
+    <aside class="sidebar-callout" id="callout-aside">
       <h4>Did you know?</h4>
       <p>Central Park receives approximately 42 million visitors annually and spans 843 acres.</p>
     </aside>
@@ -2038,30 +2058,357 @@ figcaption {
 </html>`,
     css: `body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  padding: 24px;
+  padding: 16px;
+  background-color: #fafafa;
+  color: #1e293b;
 }
+
+.mode-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #cbd5e1;
+  background: white;
+  color: #334155;
+  transition: all 0.2s;
+}
+
+.btn.active {
+  background: #0284c7;
+  color: white;
+  border-color: #0284c7;
+}
+
+.notice-box {
+  padding: 12px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+.notice-box.warning {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92400e;
+}
+
+.notice-box.success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
 .article-container {
-  max-width: 600px;
+  max-width: 440px; /* Narrow container demonstrating the screenshot bug */
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
   line-height: 1.6;
 }
+
+h1 {
+  font-size: 24px;
+  margin: 0 0 12px;
+  color: #0f172a;
+}
+
 .sidebar-callout {
-  float: right;
-  width: 200px;
-  margin: 0 0 16px 20px;
   background: #fffbeb;
   border-left: 4px solid #f59e0b;
   padding: 12px 16px;
   border-radius: 4px;
   font-size: 13.5px;
 }
+
 .sidebar-callout h4 {
   margin: 0 0 6px;
   color: #b45309;
+}
+
+.sidebar-callout p {
+  margin: 0;
+  color: #451a03;
+}
+
+/* 1. The Mistake: Fixed 200px float in narrow container */
+.layout-bug {
+  float: right;
+  width: 200px;
+  margin: 0 0 16px 20px;
+}
+
+/* 2. The Solution: Full width block without float */
+.layout-fix {
+  float: none;
+  width: auto;
+  margin: 16px 0;
 }`,
-    javascript: `console.log("Page 21: Aside element verified.");`,
-    expectedBehavior: 'Renders an article with a floated callout box representing tangentially related non-essential content.',
-    explanation: 'Implements the <aside> element description from Page 21 for sidebars, pull quotes, and related information.',
-    tags: ['aside', 'sidebar', 'semantics', 'layout'],
+    javascript: `function setMode(mode) {
+  const aside = document.getElementById('callout-aside');
+  const noticeBug = document.getElementById('notice-bug');
+  const noticeFix = document.getElementById('notice-fix');
+  const btnBug = document.getElementById('btn-bug');
+  const btnFix = document.getElementById('btn-fix');
+
+  if (mode === 'bug') {
+    aside.className = 'sidebar-callout layout-bug';
+    noticeBug.style.display = 'block';
+    noticeFix.style.display = 'none';
+    btnBug.classList.add('active');
+    btnFix.classList.remove('active');
+    console.warn("Displaying Layout Mistake: 200px fixed float squeezes adjacent text.");
+  } else {
+    aside.className = 'sidebar-callout layout-fix';
+    noticeBug.style.display = 'none';
+    noticeFix.style.display = 'block';
+    btnBug.classList.remove('active');
+    btnFix.classList.add('active');
+    console.info("Displaying Solution: Responsive aside allows text to breathe naturally.");
+  }
+}
+
+// Initial state: start with bug
+setMode('bug');`,
+    expectedBehavior: 'Demonstrates the exact CSS float column squeeze bug shown in the screenshot, with a live one-click toggle to the responsive layout fix.',
+    explanation: 'Explains why floating fixed-width elements causes awkward word-wrapping in narrow viewports, and demonstrates the responsive solution.',
+    tags: ['aside', 'float', 'layout-mistake', 'responsive-fix', 'css-bug'],
+    verificationStatus: 'verified',
+    supplementaryExample: false
+  },
+  {
+    id: 'ch1-mistake-improper-nesting',
+    title: 'Common Mistake: Overlapping Tags (Improper Nesting)',
+    chapter: 1,
+    chapterTitle: 'Chapter 1: Introduction to HTML',
+    section: '1.2',
+    sectionTitle: 'HTML Syntax',
+    topic: 'Common HTML Mistakes & Browser Error Recovery',
+    sourcePage: 5,
+    sourceListingOrFigure: 'Figure 1.4: Incorrect nesting example',
+    originalCode: `<!-- INCORRECT OVERLAPPING NESTING (Page 5) -->
+<h1>Share Your <strong>Travels</h1></strong>
+
+<!-- CORRECT PROPER NESTING -->
+<h1>Share Your <strong>Travels</strong></h1>`,
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Improper Nesting Mistake - Page 5</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Common HTML Mistake: Overlapping Tags (Figure 1.4)</h2>
+
+  <div class="card mistake-card">
+    <div class="badge error">❌ The Mistake: Overlapping Tags</div>
+    <div class="code-box">
+      <code>&lt;h1&gt;Share Your &lt;strong&gt;Travels&lt;/h1&gt;&lt;/strong&gt;</code>
+    </div>
+    <p class="desc">
+      Because <code>&lt;strong&gt;</code> was opened inside <code>&lt;h1&gt;</code>, it must close BEFORE <code>&lt;/h1&gt;</code>. Overlapping tags force the browser into error recovery mode.
+    </p>
+
+    <h4>What the Browser Actually Constructs (DOM Inspection):</h4>
+    <div class="dom-debug" id="dom-output"></div>
+  </div>
+
+  <div class="card fix-card">
+    <div class="badge success">✓ The Correct Implementation</div>
+    <div class="code-box">
+      <code>&lt;h1&gt;Share Your &lt;strong&gt;Travels&lt;/strong&gt;&lt;/h1&gt;</code>
+    </div>
+    <p class="desc">
+      Proper nesting preserves clean parent-child hierarchy and ensures CSS selectors like <code>h1 > strong</code> function reliably.
+    </p>
+  </div>
+</body>
+</html>`,
+    css: `body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: 20px;
+  background: #f8fafc;
+}
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #e2e8f0;
+}
+.mistake-card { border-left: 4px solid #ef4444; }
+.fix-card { border-left: 4px solid #22c55e; }
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.badge.error { background: #fee2e2; color: #991b1b; }
+.badge.success { background: #dcfce7; color: #166534; }
+.code-box {
+  background: #1e293b;
+  color: #f8fafc;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+.desc {
+  font-size: 13.5px;
+  color: #475569;
+  line-height: 1.5;
+}
+.dom-debug {
+  background: #f1f5f9;
+  border: 1px dashed #94a3b8;
+  padding: 10px 14px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #0f172a;
+}`,
+    javascript: `const domOutput = document.getElementById('dom-output');
+const testDiv = document.createElement('div');
+testDiv.innerHTML = '<h1>Share Your <strong>Travels</h1></strong>';
+domOutput.innerHTML = 'Browser Repaired Tree: <br><code>' +
+  testDiv.innerHTML.replace(/</g, '&lt;').replace(/>/g, '&gt;') +
+  '</code><br><span style="color:#b91c1c;font-size:11px;">Notice: The browser auto-closed &lt;/strong&gt; prematurely to repair the invalid tree!</span>';
+console.warn("Improper nesting: Browser triggered tree repair.");`,
+    expectedBehavior: 'Displays live breakdown of what happens when overlapping tags are parsed by browsers and contrasts with correct nesting.',
+    explanation: 'Demonstrates the Figure 1.4 mistake from Page 5 where overlapping tags trigger browser error recovery and violate clean XML/XHTML syntax.',
+    tags: ['nesting', 'syntax-error', 'dom-repair', 'common-mistake'],
+    verificationStatus: 'verified',
+    supplementaryExample: false
+  },
+  {
+    id: 'ch1-mistake-quirks-mode',
+    title: 'Common Mistake: Missing DOCTYPE (Quirks Mode Disaster)',
+    chapter: 1,
+    chapterTitle: 'Chapter 1: Introduction to HTML',
+    section: '1.4',
+    sectionTitle: 'Structure of HTML Documents',
+    topic: 'Quirks Mode vs Standards Mode',
+    sourcePage: 7,
+    sourceListingOrFigure: 'Page 7 DOCTYPE explanation',
+    originalCode: `<!-- MISTAKE: Omitting <!DOCTYPE html> -->
+<html>
+<head><title>Quirks Mode</title></head>
+<body>
+  <div style="width: 200px; padding: 20px; border: 5px solid red;">
+    In Quirks Mode, old IE box model shrinks content area!
+  </div>
+</body>
+</html>`,
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>DOCTYPE & Quirks Mode Mistake</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Common Mistake: Forgetting <code>&lt;!DOCTYPE html&gt;</code></h2>
+
+  <div class="status-indicator">
+    <strong>Current Document Mode:</strong>
+    <span class="mode-val" id="mode-val">Detecting...</span>
+  </div>
+
+  <div class="comparison-boxes">
+    <div class="box-card">
+      <h4>Without DOCTYPE (Quirks Mode Bug)</h4>
+      <p class="desc">Triggers legacy 1990s browser rendering:</p>
+      <ul>
+        <li>Old broken IE box model used</li>
+        <li>Percentage heights fail to resolve</li>
+        <li>Fonts and line-heights do not inherit into tables</li>
+        <li>CSS layout calculations become unpredictable</li>
+      </ul>
+    </div>
+
+    <div class="box-card highlight">
+      <h4>With <code>&lt;!DOCTYPE html&gt;</code> (Standards Mode)</h4>
+      <p class="desc">Enables modern W3C standards:</p>
+      <ul>
+        <li>Standard CSS Box Model applied</li>
+        <li>Consistent box-sizing behavior across browsers</li>
+        <li>Modern Flexbox and Grid behave properly</li>
+        <li>Full HTML5 semantic tag support</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>`,
+    css: `body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: 20px;
+  background: #f8fafc;
+}
+.status-indicator {
+  background: #1e293b;
+  color: white;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.mode-val {
+  color: #38bdf8;
+  font-family: monospace;
+  font-weight: bold;
+  margin-left: 8px;
+}
+.comparison-boxes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 600px) {
+  .comparison-boxes { grid-template-columns: 1fr; }
+}
+.box-card {
+  background: white;
+  border: 1px solid #cbd5e1;
+  padding: 16px 20px;
+  border-radius: 8px;
+}
+.box-card.highlight {
+  border-color: #22c55e;
+  background: #f0fdf4;
+}
+.desc {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 10px;
+}
+ul {
+  padding-left: 20px;
+  font-size: 13px;
+  color: #334155;
+  margin: 0;
+}
+li { margin-bottom: 6px; }`,
+    javascript: `const modeVal = document.getElementById('mode-val');
+modeVal.textContent = document.compatMode === 'CSS1Compat' ? 'CSS1Compat (Standards Mode ✓)' : 'BackCompat (Quirks Mode ⚠️)';
+console.log("Document Compatibility Mode:", document.compatMode);`,
+    expectedBehavior: 'Displays compatibility mode detection and contrasts quirks mode rendering bugs with modern standards mode.',
+    explanation: 'Explains Item 1 from Page 7: omitting the DOCTYPE causes browsers to downgrade into quirks mode, breaking layouts.',
+    tags: ['doctype', 'quirks-mode', 'standards-mode', 'common-mistake'],
     verificationStatus: 'verified',
     supplementaryExample: false
   }

@@ -2575,5 +2575,379 @@ word-spacing: normal | <length>;`,
     verificationStatus: 'verified',
     supplementaryExample: false,
     referenceTable: TABLE_2_10
+  },
+  {
+    id: 'ch2-mistake-content-box-overflow',
+    title: 'Common Mistake: The 100% + Padding Overflow Trap (Box Model)',
+    chapter: 2,
+    chapterTitle: 'Chapter 2: Introduction to CSS',
+    section: '2.6',
+    sectionTitle: 'The Box Model',
+    topic: 'Box Model Pitfalls & border-box Fix',
+    sourcePage: 39,
+    sourceListingOrFigure: 'Figure 2.16: Calculating an element\'s true size',
+    originalCode: `/* THE MISTAKE (Default content-box):
+   Element width becomes 100% + 20px padding + 20px padding = 100% + 40px!
+   Causes broken layouts and unwanted horizontal scrollbars. */
+.broken-card {
+  box-sizing: content-box;
+  width: 100%;
+  padding: 20px;
+  border: 3px solid red;
+}
+
+/* THE FIX:
+   box-sizing: border-box absorbs padding & border inside 100%! */
+.fixed-card {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 20px;
+  border: 3px solid green;
+}`,
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Box Sizing Mistake & Fix - Page 39</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>The #1 CSS Box Model Mistake: <code>width: 100% + padding</code></h2>
+
+  <div class="parent-boundary">
+    <div class="boundary-label">Parent Container Boundary (Width: 100%)</div>
+
+    <!-- MISTAKE CARD -->
+    <div class="card mistake-card">
+      <h4>❌ The Mistake: Default <code>content-box</code></h4>
+      <p>This box has <code>width: 100%; padding: 20px; border: 3px solid red;</code></p>
+      <div class="alert-bug">
+        Notice how the red border bursts <strong>46px beyond</strong> the parent container boundary, breaking the layout!
+      </div>
+    </div>
+
+    <!-- FIXED CARD -->
+    <div class="card fix-card">
+      <h4>✓ The Fix: <code>box-sizing: border-box;</code></h4>
+      <p>This box has identical <code>width: 100%; padding: 20px; border: 3px solid green;</code> but with <code>box-sizing: border-box</code>.</p>
+      <div class="alert-fix">
+        It fits <strong>100% perfectly</strong> within the parent boundary with no overflow!
+      </div>
+    </div>
+  </div>
+</body>
+</html>`,
+    css: `body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: 20px;
+  background: #f8fafc;
+}
+
+.parent-boundary {
+  width: 380px;
+  margin: 0 auto;
+  border: 2px dashed #64748b;
+  background: #f1f5f9;
+  padding: 10px;
+  position: relative;
+}
+
+.boundary-label {
+  font-size: 11px;
+  font-weight: bold;
+  color: #475569;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.card {
+  margin-bottom: 24px;
+  background: white;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* 1. THE MISTAKE (content-box) */
+.mistake-card {
+  box-sizing: content-box;
+  width: 100%;
+  padding: 20px;
+  border: 3px solid #ef4444;
+}
+
+/* 2. THE FIX (border-box) */
+.fix-card {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 20px;
+  border: 3px solid #22c55e;
+}
+
+.alert-bug {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.alert-fix {
+  background: #dcfce7;
+  color: #166534;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-top: 8px;
+  font-size: 12px;
+}`,
+    javascript: `console.warn("Box Model Mistake: content-box adds padding outside declared width.");`,
+    expectedBehavior: 'Visually shows the red card breaking out past the dashed boundary line, while the green card fits seamlessly inside.',
+    explanation: 'Transcribes the Figure 2.16 mathematical explanation on Page 39 showing why content-box causes container blowouts.',
+    tags: ['box-model', 'box-sizing', 'content-box', 'border-box', 'common-mistake'],
+    verificationStatus: 'verified',
+    supplementaryExample: false
+  },
+  {
+    id: 'ch2-mistake-fixed-height-spill',
+    title: 'Common Mistake: Fixed Height Content Spillover',
+    chapter: 2,
+    chapterTitle: 'Chapter 2: Introduction to CSS',
+    section: '2.6',
+    sectionTitle: 'The Box Model',
+    topic: 'Height Limitations & Overflow Bugs',
+    sourcePage: 40,
+    sourceListingOrFigure: 'Figure 2.17: Limitations of height property',
+    originalCode: `/* THE MISTAKE: Constraining height on text content */
+.broken-height {
+  background-color: silver;
+  width: 220px;
+  height: 90px; /* Text spills out! */
+}
+
+/* THE FIX: Use min-height or overflow control */
+.fixed-height {
+  background-color: #e2e8f0;
+  width: 220px;
+  min-height: 90px; /* Expands dynamically */
+  overflow: auto;
+}`,
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Fixed Height Mistake - Page 40</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Common Mistake: Fixed Height Spillover (Figure 2.17)</h2>
+
+  <div class="row">
+    <!-- MISTAKE -->
+    <div class="example-card">
+      <h4>❌ The Mistake: <code>height: 90px;</code></h4>
+      <div class="box broken-height">
+        In CSS, when the height is strictly fixed, there is not enough space for the text. Because overflow defaults to visible, the text spills out into adjoining areas!
+      </div>
+      <div class="colliding-sibling">
+        🚨 Text from above collides into this sibling element!
+      </div>
+    </div>
+
+    <!-- FIX -->
+    <div class="example-card">
+      <h4>✓ The Fix: <code>min-height: 90px;</code></h4>
+      <div class="box fixed-height">
+        Using <code>min-height</code> allows the container to expand naturally whenever textual content requires more vertical room.
+      </div>
+      <div class="clean-sibling">
+        ✓ No collision! Sibling element is pushed down cleanly.
+      </div>
+    </div>
+  </div>
+</body>
+</html>`,
+    css: `body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: 20px;
+  background: #f8fafc;
+}
+.row {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+.example-card {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  width: 260px;
+}
+.box {
+  padding: 10px;
+  border: 2px solid #64748b;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* 1. The Mistake: fixed height with overflow spill */
+.broken-height {
+  background-color: silver;
+  width: 220px;
+  height: 80px;
+}
+
+.colliding-sibling {
+  margin-top: 10px;
+  background: #fee2e2;
+  border: 1px solid #ef4444;
+  color: #991b1b;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+/* 2. The Fix: min-height */
+.fixed-height {
+  background-color: #e2e8f0;
+  width: 220px;
+  min-height: 80px;
+}
+
+.clean-sibling {
+  margin-top: 10px;
+  background: #dcfce7;
+  border: 1px solid #22c55e;
+  color: #166534;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 11px;
+}`,
+    javascript: `console.warn("Fixed height error: Text spilled over container boundaries.");`,
+    expectedBehavior: 'Displays text spilling out of a silver box colliding with the button below, contrasted with a self-expanding min-height box.',
+    explanation: 'Reproduces the exact Figure 2.17 bug from Page 40 showing why fixing heights on text containers breaks web layouts.',
+    tags: ['height', 'overflow', 'min-height', 'common-mistake'],
+    verificationStatus: 'verified',
+    supplementaryExample: false
+  },
+  {
+    id: 'ch2-mistake-nested-em-shrink',
+    title: 'Common Mistake: Compounding Nested Font Sizes',
+    chapter: 2,
+    chapterTitle: 'Chapter 2: Introduction to CSS',
+    section: '2.7',
+    sectionTitle: 'CSS Text Styling',
+    topic: 'Compound Font Size Bugs & rem Solution',
+    sourcePage: 43,
+    sourceListingOrFigure: 'Figure 2.22 vs Figure 2.23',
+    originalCode: `/* THE MISTAKE: Nested % or em sizes compound!
+   16px * 0.75 * 0.75 = 9px (Illegible!) */
+article { font-size: 75%; }
+div { font-size: 75%; }
+
+/* THE FIX: Use rem (root em) */
+p { font-size: 1rem; } /* Constant 16px everywhere */`,
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Nested Font Size Mistake - Page 43</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Common Mistake: Compounding Nested Font Sizes (Figure 2.22)</h2>
+
+  <div class="demo-grid">
+    <!-- MISTAKE WITH EM/% -->
+    <div class="panel bug-panel">
+      <h4>❌ The Mistake: Nested <code>75%</code> / <code>0.75em</code></h4>
+      <div class="body-level">
+        Body level: 16px
+        <div class="nest-1">
+          Inside Article (75%): 12px
+          <div class="nest-2">
+            Inside Nested Div (75% of 75%): 9px (Illegibly tiny!)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIX WITH REM -->
+    <div class="panel fix-panel">
+      <h4>✓ The Fix: <code>1rem</code> (Root Em)</h4>
+      <div class="body-level">
+        Body level: 16px (1rem)
+        <div class="rem-1">
+          Inside Article (1rem): Still 16px!
+          <div class="rem-2">
+            Inside Nested Div (1rem): Still 16px!
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>`,
+    css: `body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: 20px;
+  font-size: 16px;
+  background: #f8fafc;
+}
+.demo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 600px) {
+  .demo-grid { grid-template-columns: 1fr; }
+}
+.panel {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+}
+.bug-panel { border-left: 4px solid #ef4444; }
+.fix-panel { border-left: 4px solid #22c55e; }
+
+/* MISTAKE: Nested % compounding */
+.nest-1 {
+  font-size: 75%;
+  background: #fee2e2;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 4px;
+}
+.nest-2 {
+  font-size: 75%;
+  background: #fecaca;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 4px;
+}
+
+/* FIX: rem stays constant */
+.rem-1 {
+  font-size: 1rem;
+  background: #dcfce7;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 4px;
+}
+.rem-2 {
+  font-size: 1rem;
+  background: #bbf7d0;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 4px;
+}`,
+    javascript: `console.warn("Nested font-size compounding: 16px * 0.75 * 0.75 = 9px.");`,
+    expectedBehavior: 'Displays text progressively shrinking down to 9px in the red card, compared with steady 16px sizing in the green rem card.',
+    explanation: 'Reproduces the Figure 2.22 vs 2.23 textbook dilemma from Page 43 showing why rem units are necessary.',
+    tags: ['rem', 'em', 'font-size', 'nested-font-mistake', 'common-mistake'],
+    verificationStatus: 'verified',
+    supplementaryExample: false
   }
 ];

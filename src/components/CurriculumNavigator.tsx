@@ -34,7 +34,7 @@ export const CurriculumNavigator: React.FC<CurriculumNavigatorProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedChapter, setSelectedChapter] = useState<number | undefined>(undefined);
-  const [filterType, setFilterType] = useState<'all' | 'tables' | 'bookmarked' | 'completed'>('all');
+  const [filterType, setFilterType] = useState<'all' | 'tables' | 'mistakes' | 'bookmarked' | 'completed'>('all');
 
   // Chapter collapse state
   const [openChapters, setOpenChapters] = useState<{ [key: number]: boolean }>({
@@ -53,6 +53,7 @@ export const CurriculumNavigator: React.FC<CurriculumNavigatorProps> = ({
         query: searchQuery,
         chapter: selectedChapter,
         hasTable: filterType === 'tables' ? true : undefined,
+        isMistake: filterType === 'mistakes' ? true : undefined,
         bookmarkedOnly: filterType === 'bookmarked',
         completedOnly: filterType === 'completed'
       },
@@ -124,6 +125,17 @@ export const CurriculumNavigator: React.FC<CurriculumNavigatorProps> = ({
           >
             <TableIcon size={11} />
             <span>Tables</span>
+          </button>
+          <button
+            onClick={() => { setFilterType('mistakes'); setSelectedChapter(undefined); }}
+            className={`px-2 py-0.5 rounded cursor-pointer shrink-0 flex items-center gap-1 transition-colors ${
+              filterType === 'mistakes'
+                ? 'bg-amber-600 text-white font-medium'
+                : 'bg-[#333333] text-[#888888] hover:text-amber-300'
+            }`}
+          >
+            <span>⚠️</span>
+            <span>Mistakes &amp; Fixes</span>
           </button>
           <button
             onClick={() => { setFilterType('bookmarked'); setSelectedChapter(undefined); }}
