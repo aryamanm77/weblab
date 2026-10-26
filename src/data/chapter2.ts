@@ -2949,5 +2949,762 @@ p { font-size: 1rem; } /* Constant 16px everywhere */`,
     tags: ['rem', 'em', 'font-size', 'nested-font-mistake', 'common-mistake'],
     verificationStatus: 'verified',
     supplementaryExample: false
+  },
+  {
+    id: 'ch2-mistake-float-parent-collapse',
+    title: 'Common Mistake: Floated Children Parent Height Collapse (Clearfix Dilemma)',
+    chapter: 2,
+    chapterTitle: 'Chapter 2: Introduction to CSS',
+    section: '2.5',
+    sectionTitle: 'Advanced CSS Layouts & Normal Flow',
+    sourcePage: 21,
+    sourceListingOrFigure: 'Page 21 & Chapter 2 - Float Element Behavior & Container Collapse',
+    topic: 'CSS Float Removal from Normal Flow & Clearfix Solutions',
+    originalCode: `/* THE MISTAKE: Floated children cause the parent height to collapse to 0px! */
+.container {
+  background-color: #fef3c7;
+  border: 2px dashed #d97706;
+  /* Missing clearfix: parent has 0 computed height! */
+}
+.sidebar { float: right; width: 40%; height: 120px; }
+.main-content { float: left; width: 55%; height: 120px; }
+
+/* THE FIX: Use modern display: flow-root; or clearfix */
+.container.cleared {
+  display: flow-root; /* Creates a new Block Formatting Context (BFC) */
+}`,
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Float Parent Collapse Mistake & Fix</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Common Mistake: Float Parent Height Collapse</h2>
+  <p class="subtitle">Floating removes elements from normal flow. When all children float, the parent container shrinks to 0px height!</p>
+
+  <div class="controls-bar">
+    <button id="btn-collapse" class="btn active" onclick="setMode('collapse')">⚠️ See Mistake (Parent Collapsed)</button>
+    <button id="btn-fixed" class="btn" onclick="setMode('fixed')">✓ See Fix (display: flow-root / clear)</button>
+  </div>
+
+  <div class="demo-wrapper">
+    <div id="parent-box" class="parent-container mode-collapse">
+      <div class="badge-parent">Parent Container (Border &amp; Background)</div>
+      <div class="child float-left">
+        <strong>Float Left</strong><br>
+        <code>float: left; width: 45%;</code>
+      </div>
+      <div class="child float-right">
+        <strong>Float Right</strong><br>
+        <code>float: right; width: 45%;</code>
+      </div>
+    </div>
+
+    <!-- Sibling element that gets encroached -->
+    <div class="next-sibling">
+      <strong>Next Document Sibling Element:</strong><br>
+      In collapsed mode, notice how this box jumps right up behind the floats because the parent reported a height of 0!
+    </div>
+  </div>
+
+  <div id="explanation-text" class="status-box error">
+    <strong>⚠️ What is happening:</strong> Floated boxes do not contribute to their parent's computed height. The dashed yellow parent has completely collapsed to a thin ribbon, and following elements overlap the floats!
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>`,
+    css: `body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 24px;
+  background: #f8fafc;
+  color: #1e293b;
+  margin: 0;
+}
+h2 { margin: 0 0 6px 0; font-size: 20px; color: #0f172a; }
+.subtitle { color: #64748b; font-size: 14px; margin-bottom: 16px; }
+
+.controls-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #cbd5e1;
+  background: white;
+  color: #334155;
+  transition: all 0.2s;
+}
+.btn.active {
+  background: #3b82f6;
+  color: white;
+  border-color: #2563eb;
+}
+
+.demo-wrapper {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 16px;
+}
+
+/* PARENT CONTAINER */
+.parent-container {
+  background-color: #fef3c7;
+  border: 3px dashed #d97706;
+  padding: 6px 14px;
+  border-radius: 6px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* 1. MISTAKE: Height collapses to 0 */
+.parent-container.mode-collapse {
+  /* No clear or BFC */
+}
+
+/* 2. FIX: New Block Formatting Context */
+.parent-container.mode-fixed {
+  display: flow-root; /* Or overflow: auto; or clearfix */
+  background-color: #dcfce7;
+  border-color: #16a34a;
+}
+
+.badge-parent {
+  font-size: 12px;
+  font-weight: bold;
+  color: #92400e;
+  margin-bottom: 4px;
+}
+.mode-fixed .badge-parent {
+  color: #15803d;
+}
+
+.child {
+  padding: 14px;
+  background: #3b82f6;
+  color: white;
+  border-radius: 4px;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+.float-left {
+  float: left;
+  width: 47%;
+  background: #6366f1;
+}
+.float-right {
+  float: right;
+  width: 47%;
+  background: #0284c7;
+}
+
+.next-sibling {
+  margin-top: 10px;
+  padding: 14px;
+  background: #fee2e2;
+  border: 1px solid #f87171;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #991b1b;
+  clear: none;
+}
+.mode-fixed ~ .next-sibling {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #475569;
+}
+
+.status-box {
+  padding: 14px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.status-box.error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+.status-box.success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}`,
+    javascript: `function setMode(mode) {
+  const parent = document.getElementById('parent-box');
+  const btnCol = document.getElementById('btn-collapse');
+  const btnFix = document.getElementById('btn-fixed');
+  const status = document.getElementById('explanation-text');
+
+  if (mode === 'collapse') {
+    parent.className = 'parent-container mode-collapse';
+    btnCol.classList.add('active');
+    btnFix.classList.remove('active');
+    status.className = 'status-box error';
+    status.innerHTML = '<strong>⚠️ What is happening:</strong> Floated boxes do not contribute to their parent height. The dashed yellow parent has collapsed to 0px height, and following elements shoot right under the floats!';
+    console.warn("Float Mistake: Parent height is 0px because child elements are floated without a clearfix.");
+  } else {
+    parent.className = 'parent-container mode-fixed';
+    btnCol.classList.remove('active');
+    btnFix.classList.add('active');
+    status.className = 'status-box success';
+    status.innerHTML = '<strong>✓ The Clean Fix:</strong> Using <code>display: flow-root;</code> establishes a new Block Formatting Context (BFC). The parent expands to wrap around its floated children seamlessly!';
+    console.log("Fix Applied: Parent container cleanly encloses floated children using display: flow-root.");
+  }
+}
+window.setMode = setMode;`,
+    expectedBehavior: 'Allows user to interactively trigger the classic float parent height collapse bug and observe how display: flow-root encloses floats.',
+    explanation: 'Demonstrates the notorious float collapse bug where floating children removes them from document flow, collapsing the parent container.',
+    tags: ['float', 'clearfix', 'flow-root', 'parent-collapse', 'common-mistake', 'layout-mistake'],
+    verificationStatus: 'verified',
+    supplementaryExample: false
+  },
+  {
+    id: 'ch2-mistake-inline-dimensions',
+    title: 'Common Mistake: Styling Dimensions on Inline Elements',
+    chapter: 2,
+    chapterTitle: 'Chapter 2: Introduction to CSS',
+    section: '2.4',
+    sectionTitle: 'CSS Box Model',
+    sourcePage: 38,
+    sourceListingOrFigure: 'Page 38 - Box Model & Display Value Behavior',
+    topic: 'Inline Elements Ignoring width, height, and vertical margins',
+    originalCode: `/* THE MISTAKE: Trying to set width/height on inline elements */
+span.tag {
+  display: inline; /* default */
+  width: 200px;    /* IGNORED BY BROWSER! */
+  height: 60px;    /* IGNORED BY BROWSER! */
+  margin-top: 40px;/* IGNORED BY BROWSER! */
+}
+
+/* THE FIX: Change display to inline-block */
+span.tag {
+  display: inline-block; /* Respects dimensions while flowing inline! */
+  width: 200px;
+  height: 60px;
+  margin-top: 40px;
+}`,
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Inline Element Dimensions Mistake - Page 38</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Common Mistake: Setting Dimensions on <code>inline</code> Elements</h2>
+  <p class="subtitle">Reference: Page 38 (The CSS Box Model &amp; Display Rules)</p>
+
+  <div class="split-view">
+    <!-- MISTAKE CARD -->
+    <div class="card mistake-card">
+      <div class="badge error">❌ The Mistake: <code>display: inline</code></div>
+      <p class="desc">A developer sets <code>width: 180px; height: 50px; margin-top: 25px;</code> on a <code>&lt;span&gt;</code>:</p>
+      
+      <div class="stage">
+        Text before <span class="badge-demo inline-bad">Inline Badge</span> text after.
+      </div>
+
+      <div class="explanation-box">
+        <strong>The Browser Output:</strong> In inline mode, the browser completely disregards declared <code>width</code>, <code>height</code>, and vertical <code>margin-top/bottom</code>! The element only wraps tightly around its text.
+      </div>
+    </div>
+
+    <!-- FIX CARD -->
+    <div class="card fix-card">
+      <div class="badge success">✓ The Fix: <code>display: inline-block</code></div>
+      <p class="desc">The exact same dimensions applied with <code>display: inline-block;</code>:</p>
+      
+      <div class="stage">
+        Text before <span class="badge-demo inline-good">Inline-Block Badge</span> text after.
+      </div>
+
+      <div class="explanation-box success">
+        <strong>Why it works:</strong> <code>inline-block</code> allows elements to flow smoothly alongside surrounding text while fully respecting explicit <code>width</code>, <code>height</code>, padding, and margins!
+      </div>
+    </div>
+  </div>
+</body>
+</html>`,
+    css: `body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 24px;
+  background: #f8fafc;
+  color: #1e293b;
+  margin: 0;
+}
+h2 { margin: 0 0 6px 0; font-size: 20px; color: #0f172a; }
+.subtitle { color: #64748b; font-size: 14px; margin-bottom: 20px; }
+
+.split-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 640px) {
+  .split-view { grid-template-columns: 1fr; }
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 18px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.mistake-card { border-left: 4px solid #ef4444; }
+.fix-card { border-left: 4px solid #22c55e; }
+
+.badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+.badge.error { background: #fee2e2; color: #b91c1c; }
+.badge.success { background: #dcfce7; color: #15803d; }
+.desc { font-size: 13px; color: #64748b; margin-bottom: 14px; }
+
+.stage {
+  background: #f1f5f9;
+  border: 1px dashed #cbd5e1;
+  padding: 20px;
+  border-radius: 6px;
+  min-height: 110px;
+  margin-bottom: 14px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* 1. MISTAKE: display: inline ignores width & height */
+.inline-bad {
+  display: inline;
+  width: 180px;      /* Ignored! */
+  height: 50px;      /* Ignored! */
+  margin-top: 30px;  /* Ignored! */
+  background: #fca5a5;
+  color: #7f1d1d;
+  font-weight: bold;
+  padding: 4px 8px;
+  border: 1px solid #ef4444;
+}
+
+/* 2. FIX: display: inline-block honors dimensions */
+.inline-good {
+  display: inline-block;
+  width: 180px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  background: #86efac;
+  color: #14532d;
+  font-weight: bold;
+  border-radius: 6px;
+  border: 1px solid #22c55e;
+}
+
+.explanation-box {
+  font-size: 12px;
+  line-height: 1.5;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 10px 12px;
+  border-radius: 6px;
+}
+.explanation-box.success {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #166534;
+}`,
+    javascript: `console.warn("Box Model Alert: width and height have no effect on inline elements.");`,
+    expectedBehavior: 'Visually illustrates why width and height are ignored on display: inline vs honored on display: inline-block.',
+    explanation: 'Teaches students why inline tags like a, span, and em ignore geometric box sizing until display is set to inline-block or block.',
+    tags: ['display', 'inline', 'inline-block', 'box-model', 'common-mistake'],
+    verificationStatus: 'verified',
+    supplementaryExample: false
+  },
+  {
+    id: 'ch2-mistake-margin-collapse',
+    title: 'Common Mistake: Vertical Margin Collapsing Surprise',
+    chapter: 2,
+    chapterTitle: 'Chapter 2: Introduction to CSS',
+    section: '2.4',
+    sectionTitle: 'CSS Box Model',
+    sourcePage: 39,
+    sourceListingOrFigure: 'Page 39 - Box Model Margin Properties & Margin Collapsing',
+    topic: 'Adjoining Vertical Margin Calculation & Unexpected Spacing',
+    originalCode: `/* THE MISTAKE (Misunderstanding Margin Collapse):
+   Expecting: 40px + 30px = 70px gap between boxes.
+   Actual: Margins collapse into the single largest value (40px)! */
+.box-one {
+  margin-bottom: 40px;
+}
+.box-two {
+  margin-top: 30px;
+}
+/* Actual gap rendered by browser: 40px (not 70px!) */`,
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vertical Margin Collapse - Page 39</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Common Mistake: Vertical Margin Collapsing</h2>
+  <p class="subtitle">When top and bottom margins touch, they collapse into the <strong>single largest margin</strong> instead of adding together!</p>
+
+  <div class="split-view">
+    <!-- COLLAPSED VIEW -->
+    <div class="card mistake-card">
+      <div class="badge error">⚠️ The Behavior: Collapsing Margins</div>
+      <p class="desc">Box 1 has <code>margin-bottom: 40px</code>. Box 2 has <code>margin-top: 30px</code>.</p>
+      
+      <div class="container-demo">
+        <div class="box box-a">
+          Box A (<code>margin-bottom: 40px;</code>)
+        </div>
+        <!-- Distance indicator -->
+        <div class="gap-indicator">
+          Measured Distance: <strong>40px</strong> (Max of 40 &amp; 30)
+        </div>
+        <div class="box box-b">
+          Box B (<code>margin-top: 30px;</code>)
+        </div>
+      </div>
+
+      <div class="explanation-box">
+        <strong>The Math:</strong> Beginners expect <code>40px + 30px = 70px</code>. CSS specification dictates that adjoining vertical margins collapse into <code>Math.max(40, 30) = 40px</code>.
+      </div>
+    </div>
+
+    <!-- PREVENT COLLAPSE VIEW -->
+    <div class="card fix-card">
+      <div class="badge success">✓ The Fix: Explicit Gap or Flexbox</div>
+      <p class="desc">Using modern Flexbox / Grid <code>gap</code> or padding prevents margin collapse entirely:</p>
+      
+      <div class="container-demo flex-fix">
+        <div class="box box-a-fix">
+          Box A
+        </div>
+        <div class="gap-indicator success-ind">
+          Predictable Gap: <strong>50px</strong> (via <code>gap: 50px</code>)
+        </div>
+        <div class="box box-b-fix">
+          Box B
+        </div>
+      </div>
+
+      <div class="explanation-box success">
+        <strong>Modern Fix:</strong> Modern CSS layouts use Flexbox or CSS Grid with the <code>gap</code> property, eliminating tricky margin collapsing entirely!
+      </div>
+    </div>
+  </div>
+</body>
+</html>`,
+    css: `body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 24px;
+  background: #f8fafc;
+  color: #1e293b;
+  margin: 0;
+}
+h2 { margin: 0 0 6px 0; font-size: 20px; color: #0f172a; }
+.subtitle { color: #64748b; font-size: 14px; margin-bottom: 20px; }
+
+.split-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 640px) {
+  .split-view { grid-template-columns: 1fr; }
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 18px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.mistake-card { border-left: 4px solid #f59e0b; }
+.fix-card { border-left: 4px solid #22c55e; }
+
+.badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+.badge.error { background: #fef3c7; color: #b45309; }
+.badge.success { background: #dcfce7; color: #15803d; }
+.desc { font-size: 13px; color: #64748b; margin-bottom: 14px; }
+
+.container-demo {
+  background: #f1f5f9;
+  border: 1px dashed #cbd5e1;
+  padding: 16px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.box {
+  padding: 12px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+.box-a {
+  background: #fed7aa;
+  color: #9a3412;
+  margin-bottom: 40px; /* Collapses with 30px below */
+}
+.box-b {
+  background: #bfdbfe;
+  color: #1e40af;
+  margin-top: 30px;
+}
+
+.gap-indicator {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 66px;
+  height: 40px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px dashed #ef4444;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #b91c1c;
+  pointer-events: none;
+}
+
+.flex-fix {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  position: relative;
+}
+.box-a-fix {
+  background: #bbf7d0;
+  color: #14532d;
+}
+.box-b-fix {
+  background: #bbf7d0;
+  color: #14532d;
+}
+.gap-indicator.success-ind {
+  top: 66px;
+  height: 50px;
+  background: rgba(34, 197, 94, 0.15);
+  border-color: #22c55e;
+  color: #15803d;
+}
+
+.explanation-box {
+  font-size: 12px;
+  line-height: 1.5;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92400e;
+  padding: 10px 12px;
+  border-radius: 6px;
+}
+.explanation-box.success {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #166534;
+}`,
+    javascript: `console.log("Margin Collapse Demo: Computed gap is Math.max(40, 30) = 40px.");`,
+    expectedBehavior: 'Demonstrates visually why 40px bottom margin and 30px top margin collapse into 40px instead of summing to 70px.',
+    explanation: 'Explains Page 39 margin collapsing mechanics where vertical margins on adjacent block-level elements overlap.',
+    tags: ['margin', 'margin-collapse', 'box-model', 'common-mistake', 'layout-mistake'],
+    verificationStatus: 'verified',
+    supplementaryExample: false
+  },
+  {
+    id: 'ch2-mistake-specificity-wars',
+    title: 'Common Mistake: Specificity Wars & Accidental Overrides',
+    chapter: 2,
+    chapterTitle: 'Chapter 2: Introduction to CSS',
+    section: '2.2',
+    sectionTitle: 'CSS Syntax',
+    sourcePage: 32,
+    sourceListingOrFigure: 'Page 32 - CSS Specificity Calculation & The Cascade',
+    topic: 'Selector Specificity Clashes & ID vs Class Battles',
+    originalCode: `/* THE MISTAKE: A beginner tries to override an ID rule with a class rule */
+#profile-card p {
+  color: #1e293b; /* Specificity: (1, 0, 1) - High! */
+}
+
+/* The developer writes this and wonders why the text NEVER turns red: */
+.highlight-text {
+  color: #dc2626; /* Specificity: (0, 1, 0) - Lower! Overridden by ID rule */
+}
+
+/* BAD QUICK-FIX: Slapping !important */
+/* .highlight-text { color: #dc2626 !important; } */
+
+/* THE CLEAN FIX: Match specificity or avoid IDs in styling */
+#profile-card p.highlight-text {
+  color: #dc2626; /* Specificity: (1, 1, 1) - Clean victory! */
+}`,
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CSS Specificity Mistake - Page 32</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Common Mistake: CSS Specificity Wars</h2>
+  <p class="subtitle">Reference: Page 32 (CSS Cascade &amp; Selector Specificity Weights)</p>
+
+  <div class="split-view">
+    <!-- MISTAKE CARD -->
+    <div class="card mistake-card">
+      <div class="badge error">❌ The Mistake: Class cannot beat ID</div>
+      <p class="desc">A developer added class <code>.highlight-text</code>, expecting red text:</p>
+      
+      <div id="author-card" class="demo-box">
+        <h4 id="author-title">Author Biography</h4>
+        <!-- Text has class highlight-text, but is enclosed in #author-card -->
+        <p class="highlight-text">
+          "This text should be vibrant red according to <code>.highlight-text</code>, but an ID rule <code>#author-card p</code> has higher specificity!"
+        </p>
+      </div>
+
+      <div class="explanation-box">
+        <strong>Why it fails:</strong> An ID selector gives a weight of <code>(1, 0, 0)</code>, while a class only gives <code>(0, 1, 0)</code>. No matter how many classes you chain, a single ID selector always trumps a class!
+      </div>
+    </div>
+
+    <!-- FIX CARD -->
+    <div class="card fix-card">
+      <div class="badge success">✓ The Fix: Balanced Specificity</div>
+      <p class="desc">Solved by using equal or targeted specificity without relying on <code>!important</code>:</p>
+      
+      <div class="demo-box clean-card">
+        <h4>Author Biography</h4>
+        <p class="highlight-clean">
+          "Now this text is successfully styled in bright emerald green because we avoided heavy ID locks and used clean, modular classes!"
+        </p>
+      </div>
+
+      <div class="explanation-box success">
+        <strong>Best Practice:</strong> Keep CSS selectors shallow (classes only, avoid IDs for styling). This ensures styles are modular and easily overridden without resorting to <code>!important</code>.
+      </div>
+    </div>
+  </div>
+</body>
+</html>`,
+    css: `body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 24px;
+  background: #f8fafc;
+  color: #1e293b;
+  margin: 0;
+}
+h2 { margin: 0 0 6px 0; font-size: 20px; color: #0f172a; }
+.subtitle { color: #64748b; font-size: 14px; margin-bottom: 20px; }
+
+.split-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 640px) {
+  .split-view { grid-template-columns: 1fr; }
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 18px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.mistake-card { border-left: 4px solid #ef4444; }
+.fix-card { border-left: 4px solid #22c55e; }
+
+.badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+.badge.error { background: #fee2e2; color: #b91c1c; }
+.badge.success { background: #dcfce7; color: #15803d; }
+.desc { font-size: 13px; color: #64748b; margin-bottom: 14px; }
+
+.demo-box {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  padding: 16px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+}
+.demo-box h4 { margin: 0 0 8px 0; font-size: 15px; }
+
+/* 1. THE MISTAKE: ID selector locks specificity (1, 0, 1) */
+#author-card p {
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Class selector with lower specificity (0, 1, 0) loses! */
+.highlight-text {
+  color: #dc2626; /* Silently overridden! */
+  font-weight: bold;
+}
+
+/* 2. THE FIX: Clean modular classes */
+.clean-card p.highlight-clean {
+  color: #15803d;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.explanation-box {
+  font-size: 12px;
+  line-height: 1.5;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 10px 12px;
+  border-radius: 6px;
+}
+.explanation-box.success {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #166534;
+}`,
+    javascript: `console.warn("Specificity Clash: Rule '#author-card p' (weight: 101) overrode class '.highlight-text' (weight: 10).");`,
+    expectedBehavior: 'Demonstrates why class styling fails when competing against an ID selector, and how to maintain clean cascade hierarchy.',
+    explanation: 'Explains Page 32 specificity calculation where ID selectors overpower class declarations, causing mysterious override failures.',
+    tags: ['specificity', 'cascade', 'selectors', 'id-vs-class', 'common-mistake'],
+    verificationStatus: 'verified',
+    supplementaryExample: false
   }
 ];

@@ -2411,5 +2411,311 @@ console.log("Document Compatibility Mode:", document.compatMode);`,
     tags: ['doctype', 'quirks-mode', 'standards-mode', 'common-mistake'],
     verificationStatus: 'verified',
     supplementaryExample: false
+  },
+  {
+    id: 'ch1-mistake-invalid-list-nesting',
+    title: 'Common Mistake: Invalid List Nesting (Direct <ul> in <ul>)',
+    chapter: 1,
+    chapterTitle: 'Chapter 1: Introduction to HTML',
+    section: '1.5',
+    sectionTitle: 'Quick Tour of HTML Elements',
+    sourcePage: 18,
+    sourceListingOrFigure: 'Page 18 - List Structure & Valid HTML Nesting Rules',
+    topic: 'Valid HTML5 Hierarchy & List Parsing Pitfalls',
+    originalCode: `<!-- THE MISTAKE: Placing <ul> directly inside <ul> without an enclosing <li> -->
+<ul>
+  <li>Web Development</li>
+  <ul>
+    <li>HTML5</li>
+    <li>CSS3</li>
+  </ul>
+</ul>
+
+<!-- THE FIX: Nest sub-lists inside the parent <li> -->
+<ul>
+  <li>Web Development
+    <ul>
+      <li>HTML5</li>
+      <li>CSS3</li>
+    </ul>
+  </li>
+</ul>`,
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Invalid List Nesting Mistake - Page 18</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Common HTML Mistake: Invalid List Nesting</h2>
+  <p class="subtitle">W3C HTML specification forbids <code>&lt;ul&gt;</code> directly inside <code>&lt;ul&gt;</code> without an enclosing <code>&lt;li&gt;</code>.</p>
+
+  <div class="split-view">
+    <!-- MISTAKE CARD -->
+    <div class="card mistake-card">
+      <div class="badge error">❌ The Mistake: <code>&lt;ul&gt;</code> directly in <code>&lt;ul&gt;</code></div>
+      <p class="desc">Browsers attempt error recovery by synthesizing an anonymous block or misaligning bullets:</p>
+      <div class="list-container">
+        <ul class="bad-list">
+          <li>Frontend Technologies</li>
+          <!-- INVALID: ul directly inside ul -->
+          <ul>
+            <li>HTML5 Semantic Tags</li>
+            <li>CSS3 Flexbox & Grid</li>
+          </ul>
+          <li>Backend Technologies</li>
+        </ul>
+      </div>
+      <div class="explanation-box">
+        <strong>Why it's broken:</strong> HTML lists may only contain <code>&lt;li&gt;</code> as direct children. Screen readers and automated parsers get confused by this illegal structure.
+      </div>
+    </div>
+
+    <!-- FIX CARD -->
+    <div class="card fix-card">
+      <div class="badge success">✓ The Fix: <code>&lt;ul&gt;</code> inside parent <code>&lt;li&gt;</code></div>
+      <p class="desc">Proper hierarchical nesting creates clean visual sub-levels and valid accessible DOM:</p>
+      <div class="list-container">
+        <ul class="good-list">
+          <li>Frontend Technologies
+            <!-- VALID: ul placed inside the parent li -->
+            <ul>
+              <li>HTML5 Semantic Tags</li>
+              <li>CSS3 Flexbox & Grid</li>
+            </ul>
+          </li>
+          <li>Backend Technologies</li>
+        </ul>
+      </div>
+      <div class="explanation-box success">
+        <strong>The Rule:</strong> Always close the parent <code>&lt;li&gt;</code> <em>after</em> its nested child list!
+      </div>
+    </div>
+  </div>
+</body>
+</html>`,
+    css: `body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 24px;
+  background: #f8fafc;
+  color: #1e293b;
+  margin: 0;
+}
+h2 {
+  margin: 0 0 6px 0;
+  font-size: 20px;
+  color: #0f172a;
+}
+.subtitle {
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.split-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 640px) {
+  .split-view { grid-template-columns: 1fr; }
+}
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 18px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.mistake-card { border-left: 4px solid #ef4444; }
+.fix-card { border-left: 4px solid #22c55e; }
+.badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+.badge.error { background: #fee2e2; color: #b91c1c; }
+.badge.success { background: #dcfce7; color: #15803d; }
+.desc { font-size: 13px; color: #64748b; margin-bottom: 14px; }
+.list-container {
+  background: #f1f5f9;
+  padding: 14px 20px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+}
+.bad-list, .good-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+}
+.bad-list li, .good-list li {
+  margin-bottom: 4px;
+}
+.explanation-box {
+  font-size: 12px;
+  line-height: 1.5;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 10px 12px;
+  border-radius: 6px;
+}
+.explanation-box.success {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #166534;
+}`,
+    javascript: `console.warn("HTML Validation Warning: <ul> cannot have a child <ul> without an enclosing <li>!");`,
+    expectedBehavior: 'Contrasts illegal list nesting error recovery with standard valid hierarchical list structure.',
+    explanation: 'Demonstrates the common beginner mistake of placing sub-lists directly inside ul tags instead of inside parent li elements.',
+    tags: ['lists', 'nesting', 'html-validation', 'common-mistake', 'accessibility'],
+    verificationStatus: 'verified',
+    supplementaryExample: false
+  },
+  {
+    id: 'ch1-mistake-broken-relative-path',
+    title: 'Common Mistake: Broken Relative Paths & Missing Alt Text',
+    chapter: 1,
+    chapterTitle: 'Chapter 1: Introduction to HTML',
+    section: '1.5',
+    sectionTitle: 'Quick Tour of HTML Elements',
+    sourcePage: 15,
+    sourceListingOrFigure: 'Page 15 - Relative Image References and alt Attribute Requirements',
+    topic: 'URL Traversal Pitfalls and Broken Image Outputs',
+    originalCode: `<!-- THE MISTAKE: Incorrect path traversal and missing alt -->
+<img src="../images/central-park.jpg"> <!-- 404 Not Found & no screen reader label! -->
+
+<!-- THE FIX: Accurate relative path + descriptive alt attribute -->
+<img src="https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=400" 
+     alt="Central Park Manhattan trees and walking path" 
+     width="300" height="180">`,
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Broken Relative Path Mistake - Page 15</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Common Image Mistake: Broken Path &amp; Missing <code>alt</code></h2>
+  <p class="subtitle">Reference: Page 15 (Relative URLs &amp; Image Fallback Behavior)</p>
+
+  <div class="split-view">
+    <!-- MISTAKE CARD -->
+    <div class="card mistake-card">
+      <div class="badge error">❌ The Mistake: Broken Path + No Alt</div>
+      <p class="desc">A wrong relative path with no alt text leaves a broken icon and a blank mystery for users:</p>
+      
+      <div class="preview-frame">
+        <!-- Broken image with no alt attribute -->
+        <img src="wrong-subfolder/non-existent-photo.jpg" class="broken-img-demo">
+      </div>
+
+      <div class="explanation-box">
+        <strong>The Browser Output:</strong> Because the URL cannot be resolved and no <code>alt</code> text was supplied, the browser renders an empty broken image icon. Screen readers read aloud the entire raw cryptic file name!
+      </div>
+    </div>
+
+    <!-- FIX CARD -->
+    <div class="card fix-card">
+      <div class="badge success">✓ The Fix: Resolved URL + Meaningful Alt</div>
+      <p class="desc">Correct path with descriptive alt attribute and explicit dimensions to avoid layout shifts:</p>
+      
+      <div class="preview-frame">
+        <img src="https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=400" 
+             alt="Vibrant green trees lining a sunny pathway in Central Park" 
+             class="fixed-img-demo"
+             width="280" height="160">
+      </div>
+
+      <div class="explanation-box success">
+        <strong>Best Practice:</strong> Always specify <code>alt</code> for accessibility and SEO. If an image fails to load, the <code>alt</code> text cleanly displays in its place.
+      </div>
+    </div>
+  </div>
+</body>
+</html>`,
+    css: `body {
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 24px;
+  background: #f8fafc;
+  color: #1e293b;
+  margin: 0;
+}
+h2 { margin: 0 0 6px 0; font-size: 20px; color: #0f172a; }
+.subtitle { color: #64748b; font-size: 14px; margin-bottom: 20px; }
+.split-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 640px) {
+  .split-view { grid-template-columns: 1fr; }
+}
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 18px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.mistake-card { border-left: 4px solid #ef4444; }
+.fix-card { border-left: 4px solid #22c55e; }
+.badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+.badge.error { background: #fee2e2; color: #b91c1c; }
+.badge.success { background: #dcfce7; color: #15803d; }
+.desc { font-size: 13px; color: #64748b; margin-bottom: 14px; }
+.preview-frame {
+  background: #f1f5f9;
+  border: 1px dashed #cbd5e1;
+  padding: 16px;
+  border-radius: 6px;
+  min-height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+.broken-img-demo {
+  border: 1px solid #ef4444;
+  width: 150px;
+  height: 100px;
+}
+.fixed-img-demo {
+  border-radius: 4px;
+  object-fit: cover;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  max-width: 100%;
+  height: auto;
+}
+.explanation-box {
+  font-size: 12px;
+  line-height: 1.5;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 10px 12px;
+  border-radius: 6px;
+}
+.explanation-box.success {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #166534;
+}`,
+    javascript: `console.error("404 Error: Failed to load resource: wrong-subfolder/non-existent-photo.jpg");
+console.warn("Accessibility Warning: Missing alt attribute on <img> tag.");`,
+    expectedBehavior: 'Displays broken image placeholder and browser 404 warning contrasted with valid accessible image loading.',
+    explanation: 'Demonstrates common image path errors (wrong directory traversal) and the importance of alt text from Page 15.',
+    tags: ['images', 'relative-path', 'alt-text', 'accessibility', 'common-mistake', '404-error'],
+    verificationStatus: 'verified',
+    supplementaryExample: false
   }
 ];
